@@ -1,5 +1,8 @@
 <template>
-  <ion-page id="main" class="w-full h-full">
+  <ion-page
+    id="main"
+    class="w-full h-full"
+  >
     <ion-header>
       <ion-toolbar>
         <ion-title>Secure storage</ion-title>
@@ -7,83 +10,165 @@
     </ion-header>
 
     <ion-content :scroll-y="true">
-      <div class="flex flex-col justify-start items-center w-full ion-padding-top pr-5">
-        <ion-item v-if="Capacitor.getPlatform() === 'ios'" lines="inset" class="w-full">
+      <div
+        class="flex flex-col justify-start items-center w-full ion-padding-top pr-5"
+      >
+        <ion-item
+          v-if="Capacitor.getPlatform() === 'ios'"
+          lines="inset"
+          class="w-full"
+        >
           <ion-label position="stacked">Access</ion-label>
-          <ion-select v-model="access" aria-label="Access" placeholder="Select">
+          <ion-select
+            v-model="access"
+            aria-label="Access"
+            placeholder="Select"
+          >
             <ion-select-option :value="KeychainAccess.whenUnlocked">
               whenUnlocked
             </ion-select-option>
-            <ion-select-option :value="KeychainAccess.whenUnlockedThisDeviceOnly">
+            <ion-select-option
+              :value="KeychainAccess.whenUnlockedThisDeviceOnly"
+            >
               whenUnlockedThisDeviceOnly
             </ion-select-option>
             <ion-select-option :value="KeychainAccess.afterFirstUnlock">
               afterFirstUnlock
             </ion-select-option>
-            <ion-select-option :value="KeychainAccess.afterFirstUnlockThisDeviceOnly">
+            <ion-select-option
+              :value="KeychainAccess.afterFirstUnlockThisDeviceOnly"
+            >
               afterFirstUnlockThisDeviceOnly
             </ion-select-option>
-            <ion-select-option :value="KeychainAccess.whenPasscodeSetThisDeviceOnly">
+            <ion-select-option
+              :value="KeychainAccess.whenPasscodeSetThisDeviceOnly"
+            >
               whenPasscodeSetThisDeviceOnly
             </ion-select-option>
           </ion-select>
         </ion-item>
 
-        <ion-item v-if="Capacitor.getPlatform() === 'ios'" lines="inset" class="w-full">
-          <ion-checkbox v-model="iCloudSync" @ion-change="onSetSync">
+        <ion-item
+          v-if="Capacitor.getPlatform() === 'ios'"
+          lines="inset"
+          class="w-full"
+        >
+          <ion-checkbox
+            v-model="iCloudSync"
+            @ion-change="onSetSync"
+          >
             Cloud sync
           </ion-checkbox>
         </ion-item>
 
         <div class="flex items-end w-full">
-          <ion-item lines="inset" class="w-full">
-            <ion-input v-model="prefix" label="Prefix:" type="text" class="flex-1" />
+          <ion-item
+            lines="inset"
+            class="w-full"
+          >
+            <ion-input
+              v-model="prefix"
+              label="Prefix:"
+              type="text"
+              class="flex-1"
+            />
           </ion-item>
 
-          <ion-button size="small" class="flex-initial" @click="onSetPrefix">
+          <ion-button
+            size="small"
+            class="flex-initial"
+            @click="onSetPrefix"
+          >
             Set
           </ion-button>
         </div>
 
         <div class="flex w-full">
-          <ion-item lines="inset" class="flex-1">
-            <ion-input v-model="key" label="Key:" type="text" required />
+          <ion-item
+            lines="inset"
+            class="flex-1"
+          >
+            <ion-input
+              v-model="key"
+              label="Key:"
+              type="text"
+              required
+            />
           </ion-item>
-          <ion-item v-if="Capacitor.getPlatform() === 'ios'" lines="none">
-            <ion-checkbox v-model="syncItem" :indeterminate="useGlobalSync" @click="onSyncItemClick">
+          <ion-item
+            v-if="Capacitor.getPlatform() === 'ios'"
+            lines="none"
+          >
+            <ion-checkbox
+              v-model="syncItem"
+              :indeterminate="useGlobalSync"
+              @click="onSyncItemClick"
+            >
               Sync
             </ion-checkbox>
           </ion-item>
         </div>
 
-        <ion-item lines="inset" class="w-full">
-          <ion-input v-model="data" label="Data:" required @ion-input="onDataChanged" />
+        <ion-item
+          lines="inset"
+          class="w-full"
+        >
+          <ion-input
+            v-model="data"
+            label="Data:"
+            required
+            @ion-input="onDataChanged"
+          />
         </ion-item>
       </div>
 
-      <ion-item lines="none" class="text-sm">
+      <ion-item
+        lines="none"
+        class="text-sm"
+      >
         {{ dataType || '&nbsp;' }}
       </ion-item>
 
-      <ion-item lines="none" class="flex items-center w-full pt-6 space-x-5">
+      <ion-item
+        lines="none"
+        class="flex items-center w-full pt-6 space-x-5"
+      >
         <ion-text>Item:</ion-text>
-        <ion-button size="default" @click="onSet">
+        <ion-button
+          size="default"
+          @click="onSet"
+        >
           Set
         </ion-button>
-        <ion-button size="default" @click="onGet">
+        <ion-button
+          size="default"
+          @click="onGet"
+        >
           Get
         </ion-button>
-        <ion-button size="default" @click="onRemove">
+        <ion-button
+          size="default"
+          @click="onRemove"
+        >
           Remove
         </ion-button>
       </ion-item>
 
-      <ion-item lines="none" class="flex justify-center items-center w-full mt-4 space-x-5">
+      <ion-item
+        lines="none"
+        class="flex justify-center items-center w-full mt-4 space-x-5"
+      >
         <ion-text>Global:</ion-text>
-        <ion-button size="default" @click="onClear">
+        <ion-button
+          size="default"
+          @click="onClear"
+        >
           Clear
         </ion-button>
-        <ion-button size="default" @click="onShowKeys">
+        <ion-button
+          size="default"
+          @click="onShowKeys"
+        >
           Keys
         </ion-button>
       </ion-item>
@@ -327,8 +412,9 @@ async function onShowKeys(): Promise<void> {
       qty = `are ${keys.length}`
   }
 
-  let msg = `There ${qty} key${keys.length === 1 ? '' : 's'} with the prefix '${prefix.value
-    }'.`
+  let msg = `There ${qty} key${keys.length === 1 ? '' : 's'} with the prefix '${
+    prefix.value
+  }'.`
 
   if (keys.length > 0) {
     msg += `<br><br>${keys.join('<br>')}`
