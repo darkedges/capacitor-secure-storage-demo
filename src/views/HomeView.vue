@@ -87,6 +87,16 @@
           Keys
         </ion-button>
       </ion-item>
+
+      <ion-item lines="none" class="flex justify-center items-center w-full mt-4 space-x-5">
+        <ion-text>Biometric:</ion-text>
+        <ion-button size="default" @click="onEncrypt">
+          Encrypt
+        </ion-button>
+        <ion-button size="default" @click="onDecrypt">
+          Decrypt
+        </ion-button>
+      </ion-item>
     </ion-content>
   </ion-page>
 </template>
@@ -99,6 +109,7 @@ import {
   StorageErrorType,
   SecureStorage,
   StorageError,
+  NativeBiometric,
 } from '@darkedges/capacitor-secure-storage'
 import type { InputChangeEventDetail, IonInputCustomEvent } from '@ionic/core'
 import {
@@ -123,8 +134,8 @@ import { onBeforeMount, ref } from 'vue'
 /*
  * ref
  */
-const key = ref('')
-const data = ref('')
+const key = ref('test')
+const data = ref('{"key":"value"}')
 const dataType = ref('')
 const prefix = ref('')
 const iCloudSync = ref(false)
@@ -361,5 +372,43 @@ async function showAlert(message: string): Promise<void> {
     buttons: ['OK'],
   })
   await alert.present()
+}
+
+async function onEncrypt(): Promise<void> {
+  try {
+    const [value, type] = parseValue(data.value)
+    const v = await NativeBiometric.verifyIdentity({
+      title: "Flybuys",
+      subtitle: "Biometric sign in for Flybuys",
+      description: "To continue, please provide your biometric credentials.",
+      useFallback: true,
+      encrypt: true,
+      secretKeyName: "capactitor-storage"
+    })
+      .then(() => true)
+      .catch(() => false);
+    await showAlert(`onEncrypt: ${v}:${JSON.stringify(value)}`)
+  } catch (e) {
+    await showErrorAlert(e)
+  }
+}
+
+async function onDecrypt(): Promise<void> {
+  try {
+    const [value, type] = parseValue(data.value)
+    const v = await NativeBiometric.verifyIdentity({
+      title: "Flybuys",
+      subtitle: "Biometric sign in for Flybuys",
+      description: "To continue, please provide your biometric credentials.",
+      useFallback: true,
+      v: false,
+      secretKeyName: "capactitor-storage"
+    })
+      .then(() => true)
+      .catch(() => false);
+    await showAlert(`onDecrypt: ${v}:${JSON.stringify(value)}`)
+  } catch (e) {
+    await showErrorAlert(e)
+  }
 }
 </script>
